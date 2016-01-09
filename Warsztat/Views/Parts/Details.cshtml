@@ -1,0 +1,50 @@
+﻿@model Warsztat.Models.Parts
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Parts</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PartName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PartName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Netto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Netto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Brutto)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Brutto)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID_part }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Warsztat.Models.Services>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Brutto)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Netto)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ServiceName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Brutto)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Netto)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID_service }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID_service }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID_service })
+        </td>
+    </tr>
+}
+
+</table>
