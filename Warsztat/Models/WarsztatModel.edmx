@@ -37,8 +37,7 @@
           <Property Name="ID_order" Type="bigint" />
           <Property Name="ID_part" Type="bigint" />
           <Property Name="quantity" Type="int" />
-          <Property Name="Brutto" Type="money" />
-          <Property Name="Netto" Type="money" />
+          <Property Name="Price" Type="money" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -49,8 +48,7 @@
           <Property Name="ID_user" Type="bigint" />
           <Property Name="OrderDate" Type="datetime" />
           <Property Name="CompleteDate" Type="datetime" />
-          <Property Name="Brutto" Type="money" />
-          <Property Name="Netto" Type="money" />
+          <Property Name="Price" Type="money" />
         </EntityType>
         <EntityType Name="Parts">
           <Key>
@@ -58,9 +56,8 @@
           </Key>
           <Property Name="ID_part" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PartName" Type="varchar" MaxLength="50" />
-          <Property Name="Netto" Type="money" />
-          <Property Name="Brutto" Type="money" />
           <Property Name="Quantity" Type="int" />
+          <Property Name="Price" Type="money" />
         </EntityType>
         <EntityType Name="PartsToRepair">
           <Key>
@@ -94,8 +91,7 @@
           </Key>
           <Property Name="ID_service" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ServiceName" Type="varchar" MaxLength="50" />
-          <Property Name="Brutto" Type="money" />
-          <Property Name="Netto" Type="money" />
+          <Property Name="Price" Type="money" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -330,10 +326,9 @@
           <Property Name="ID_order" Type="Int64" />
           <Property Name="ID_part" Type="Int64" />
           <Property Name="quantity" Type="Int32" />
-          <Property Name="Brutto" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="Netto" Type="Decimal" Precision="19" Scale="4" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_OrderDetails_Orders" FromRole="OrderDetails" ToRole="Orders" />
           <NavigationProperty Name="Parts" Relationship="Self.FK_OrderDetails_Parts" FromRole="OrderDetails" ToRole="Parts" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -344,10 +339,9 @@
           <Property Name="ID_user" Type="Int64" />
           <Property Name="OrderDate" Type="DateTime" Precision="3" />
           <Property Name="CompleteDate" Type="DateTime" Precision="3" />
-          <Property Name="Brutto" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="Netto" Type="Decimal" Precision="19" Scale="4" />
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetails_Orders" FromRole="Orders" ToRole="OrderDetails" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Orders_Users" FromRole="Orders" ToRole="Users" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="Parts">
           <Key>
@@ -355,11 +349,10 @@
           </Key>
           <Property Name="ID_part" Type="Int64" Nullable="false" />
           <Property Name="PartName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Netto" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="Brutto" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="Quantity" Type="Int32" />
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetails_Parts" FromRole="Parts" ToRole="OrderDetails" />
           <NavigationProperty Name="PartsToRepair" Relationship="Self.FK_PartsToRepair_Parts" FromRole="Parts" ToRole="PartsToRepair" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="PartsToRepair">
           <Key>
@@ -399,9 +392,8 @@
           </Key>
           <Property Name="ID_service" Type="Int64" Nullable="false" />
           <Property Name="ServiceName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Brutto" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="Netto" Type="Decimal" Precision="19" Scale="4" />
           <NavigationProperty Name="Repairs" Relationship="Self.FK_Repairs_Services" FromRole="Services" ToRole="Repairs" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -636,35 +628,32 @@
           <EntitySetMapping Name="OrderDetails">
             <EntityTypeMapping TypeName="WarsztatModel.OrderDetails">
               <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ID_orderDetail" ColumnName="ID_orderDetail" />
                 <ScalarProperty Name="ID_order" ColumnName="ID_order" />
                 <ScalarProperty Name="ID_part" ColumnName="ID_part" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
-                <ScalarProperty Name="Brutto" ColumnName="Brutto" />
-                <ScalarProperty Name="Netto" ColumnName="Netto" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="WarsztatModel.Orders">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ID_order" ColumnName="ID_order" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="ID_user" ColumnName="ID_user" />
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
                 <ScalarProperty Name="CompleteDate" ColumnName="CompleteDate" />
-                <ScalarProperty Name="Brutto" ColumnName="Brutto" />
-                <ScalarProperty Name="Netto" ColumnName="Netto" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Parts">
             <EntityTypeMapping TypeName="WarsztatModel.Parts">
               <MappingFragment StoreEntitySet="Parts">
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ID_part" ColumnName="ID_part" />
                 <ScalarProperty Name="PartName" ColumnName="PartName" />
-                <ScalarProperty Name="Netto" ColumnName="Netto" />
-                <ScalarProperty Name="Brutto" ColumnName="Brutto" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -701,11 +690,10 @@
           <EntitySetMapping Name="Services">
             <EntityTypeMapping TypeName="WarsztatModel.Services">
               <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ID_service" ColumnName="ID_service" />
                 <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-                <ScalarProperty Name="Brutto" ColumnName="Brutto" />
-                <ScalarProperty Name="Netto" ColumnName="Netto" />
-              </MappingFragment>
+                </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">

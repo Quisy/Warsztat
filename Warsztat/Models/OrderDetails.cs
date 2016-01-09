@@ -18,8 +18,7 @@ namespace Warsztat.Models
         public Nullable<long> ID_order { get; set; }
         public Nullable<long> ID_part { get; set; }
         public Nullable<int> quantity { get; set; }
-        public Nullable<decimal> Brutto { get; set; }
-        public Nullable<decimal> Netto { get; set; }
+        public Nullable<decimal> Price { get; set; }
     
         public virtual Orders Orders { get; set; }
         public virtual Parts Parts { get; set; }

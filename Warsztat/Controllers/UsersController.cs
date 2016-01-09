@@ -133,9 +133,10 @@ namespace Warsztat.Controllers
             Users user = db.Users.Include(u => u.Roles).FirstOrDefault(u => (u.Login == login) && (u.Password == password));
             if (user != null)
             {
-                Session["UserName"] = user.Login;
-                Session["UserID"] = user.ID_user;
-                Session["UserRole"] = user.Roles.RoleName;
+                Session["User"] = user;
+                //Session["UserName"] = user.Login;
+                //Session["UserID"] = user.ID_user;
+                //Session["UserRole"] = user.Roles.RoleName;
                 Session.Timeout = 20;
 
                 return View("~/Views/Home/Index.cshtml");
@@ -150,9 +151,10 @@ namespace Warsztat.Controllers
 
         public ActionResult Logout()
         {
-            Session["UserName"] = null;
-            Session["UserID"] = null;
-            Session["UserRole"] = null;
+            Session["User"] = null;
+            //Session["UserName"] = null;
+            //Session["UserID"] = null;
+            //Session["UserRole"] = null;
             return View("~/Views/Home/Index.cshtml");
         }
 

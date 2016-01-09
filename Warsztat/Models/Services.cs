@@ -22,8 +22,7 @@ namespace Warsztat.Models
     
         public long ID_service { get; set; }
         public string ServiceName { get; set; }
-        public Nullable<decimal> Brutto { get; set; }
-        public Nullable<decimal> Netto { get; set; }
+        public Nullable<decimal> Price { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Repairs> Repairs { get; set; }

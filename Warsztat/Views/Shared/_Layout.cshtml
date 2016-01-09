@@ -19,7 +19,7 @@
                 @Html.ActionLink("Warsztat", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                @if (Session["UserName"] == null)
+                @if (Session["User"] == null)
                 {
                     <ul class="nav navbar-nav" style="float: right;">
                         <li>@Html.ActionLink("Sign in", "Login", "Users")</li>
@@ -27,10 +27,13 @@
                 }
                 else
                 {
-                    <ul class="nav navbar-nav" style="float: right;">
-                        <li>@Html.Label("Hello " + Session["UserName"].ToString())</li>
-                        <li>@Html.ActionLink("Sign out", "Logout", "Users")</li>
-                    </ul>
+                    var aaa = (Warsztat.Models.Users)Session["User"];
+
+                        <ul class="nav navbar-nav" style="float: right;">
+                            <li>@Html.Label("Hello " + aaa.Name)</li>
+                            <li>@Html.ActionLink("Sign out", "Logout", "Users")</li>
+                            <li>@Html.ActionLink("Cart", "Index", "Home")</li>
+                        </ul>
                 }
             </div>
         </div>
