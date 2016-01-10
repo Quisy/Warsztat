@@ -26,7 +26,12 @@
         <AssociationConnector Association="WarsztatModel.FK_PartsToRepair_Repairs" ManuallyRouted="false" />
         <AssociationConnector Association="WarsztatModel.FK_Repairs_Services" ManuallyRouted="false" />
         <AssociationConnector Association="WarsztatModel.FK_Users_Roles" ManuallyRouted="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="WarsztatModel.OrderStatus" Width="1.5" PointX="0.75" PointY="8.875" />
+        <AssociationConnector Association="WarsztatModel.FK_Orders_OrderStatus" />
+        <EntityTypeShape EntityType="WarsztatModel.Cart" Width="1.5" PointX="9.75" PointY="1.125" />
+        <AssociationConnector Association="WarsztatModel.FK_Cart_Parts" />
+        <AssociationConnector Association="WarsztatModel.FK_Cart_Users" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

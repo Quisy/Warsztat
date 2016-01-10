@@ -20,6 +20,7 @@ namespace Warsztat.Models
             this.Addresses = new HashSet<Addresses>();
             this.Cars = new HashSet<Cars>();
             this.Orders = new HashSet<Orders>();
+            this.Cart = new HashSet<Cart>();
         }
     
         public long ID_user { get; set; }
@@ -36,5 +37,7 @@ namespace Warsztat.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orders> Orders { get; set; }
         public virtual Roles Roles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Cart> Cart { get; set; }
     }
 }

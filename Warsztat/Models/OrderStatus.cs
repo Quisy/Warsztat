@@ -12,25 +12,18 @@ namespace Warsztat.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Orders
+    public partial class OrderStatus
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Orders()
+        public OrderStatus()
         {
-            this.OrderDetails = new HashSet<OrderDetails>();
+            this.Orders = new HashSet<Orders>();
         }
     
-        public long ID_order { get; set; }
-        public Nullable<long> OrderNumber { get; set; }
-        public Nullable<long> ID_user { get; set; }
-        public Nullable<System.DateTime> OrderDate { get; set; }
-        public Nullable<System.DateTime> CompleteDate { get; set; }
-        public Nullable<decimal> Price { get; set; }
-        public Nullable<int> ID_status { get; set; }
+        public int ID_status { get; set; }
+        public string StatusName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OrderDetails> OrderDetails { get; set; }
-        public virtual Users Users { get; set; }
-        public virtual OrderStatus OrderStatus { get; set; }
+        public virtual ICollection<Orders> Orders { get; set; }
     }
 }

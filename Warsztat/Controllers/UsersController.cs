@@ -139,7 +139,7 @@ namespace Warsztat.Controllers
                 //Session["UserRole"] = user.Roles.RoleName;
                 Session.Timeout = 20;
 
-                return View("~/Views/Home/Index.cshtml");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -155,7 +155,7 @@ namespace Warsztat.Controllers
             //Session["UserName"] = null;
             //Session["UserID"] = null;
             //Session["UserRole"] = null;
-            return View("~/Views/Home/Index.cshtml");
+            return RedirectToAction("Index", "Home");
         }
 
 

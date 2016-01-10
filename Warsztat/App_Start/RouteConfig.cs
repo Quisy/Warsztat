@@ -18,6 +18,13 @@ namespace Warsztat
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            // will allow for Cart/ChangeQuantity/2/1
+            routes.MapRoute(
+                    "ChangeProductQuantityOnCard",
+                    "Cart/ChangeQuantity/{id}/{quantity}",
+                    new { controller = "Cart", action = "ChangeQuantity" }
+            );
         }
     }
 }

@@ -25,9 +25,19 @@
           <Property Name="Brand" Type="varchar" MaxLength="50" />
           <Property Name="Model" Type="varchar" MaxLength="50" />
           <Property Name="RegistrationNo" Type="varchar" MaxLength="10" />
-          <Property Name="ProductionDate" Type="datetime" />
+          <Property Name="ProductionDate" Type="date" />
           <Property Name="Mileage" Type="int" Nullable="false" />
           <Property Name="InService" Type="bit" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="ID_cart" />
+          </Key>
+          <Property Name="ID_cart" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_user" Type="bigint" />
+          <Property Name="ID_part" Type="bigint" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Price" Type="money" />
         </EntityType>
         <EntityType Name="OrderDetails">
           <Key>
@@ -49,6 +59,14 @@
           <Property Name="OrderDate" Type="datetime" />
           <Property Name="CompleteDate" Type="datetime" />
           <Property Name="Price" Type="money" />
+          <Property Name="ID_status" Type="int" />
+        </EntityType>
+        <EntityType Name="OrderStatus">
+          <Key>
+            <PropertyRef Name="ID_status" />
+          </Key>
+          <Property Name="ID_status" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusName" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Parts">
           <Key>
@@ -138,6 +156,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Cart_Parts">
+          <End Role="Parts" Type="Self.Parts" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parts">
+              <PropertyRef Name="ID_part" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="ID_part" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cart_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID_user" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="ID_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_OrderDetails_Orders">
           <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
           <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
@@ -159,6 +201,18 @@
             </Principal>
             <Dependent Role="OrderDetails">
               <PropertyRef Name="ID_part" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_OrderStatus">
+          <End Role="OrderStatus" Type="Self.OrderStatus" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatus">
+              <PropertyRef Name="ID_status" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ID_status" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -237,8 +291,10 @@
         <EntityContainer Name="WarsztatModelStoreContainer">
           <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cars" EntityType="Self.Cars" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderStatus" EntityType="Self.OrderStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Parts" EntityType="Self.Parts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PartsToRepair" EntityType="Self.PartsToRepair" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Repairs" EntityType="Self.Repairs" Schema="dbo" store:Type="Tables" />
@@ -254,6 +310,14 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Cars" EntitySet="Cars" />
           </AssociationSet>
+          <AssociationSet Name="FK_Cart_Parts" Association="Self.FK_Cart_Parts">
+            <End Role="Parts" EntitySet="Parts" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cart_Users" Association="Self.FK_Cart_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
           <AssociationSet Name="FK_OrderDetails_Orders" Association="Self.FK_OrderDetails_Orders">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
@@ -261,6 +325,10 @@
           <AssociationSet Name="FK_OrderDetails_Parts" Association="Self.FK_OrderDetails_Parts">
             <End Role="Parts" EntitySet="Parts" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderStatus" Association="Self.FK_Orders_OrderStatus">
+            <End Role="OrderStatus" EntitySet="OrderStatus" />
+            <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
           <AssociationSet Name="FK_Orders_Users" Association="Self.FK_Orders_Users">
             <End Role="Users" EntitySet="Users" />
@@ -312,7 +380,7 @@
           <Property Name="Brand" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="RegistrationNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="ProductionDate" Type="DateTime" Precision="3" />
+          <Property Name="ProductionDate" Type="DateTime" Precision="0" />
           <Property Name="Mileage" Type="Int32" Nullable="false" />
           <Property Name="InService" Type="Boolean" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Cars_Users" FromRole="Cars" ToRole="Users" />
@@ -342,6 +410,8 @@
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetails_Orders" FromRole="Orders" ToRole="OrderDetails" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Orders_Users" FromRole="Orders" ToRole="Users" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ID_status" Type="Int32" />
+          <NavigationProperty Name="OrderStatus" Relationship="WarsztatModel.FK_Orders_OrderStatus" FromRole="Orders" ToRole="OrderStatus" />
         </EntityType>
         <EntityType Name="Parts">
           <Key>
@@ -353,7 +423,8 @@
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetails_Parts" FromRole="Parts" ToRole="OrderDetails" />
           <NavigationProperty Name="PartsToRepair" Relationship="Self.FK_PartsToRepair_Parts" FromRole="Parts" ToRole="PartsToRepair" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
-        </EntityType>
+          <NavigationProperty Name="Cart" Relationship="WarsztatModel.FK_Cart_Parts" FromRole="Parts" ToRole="Cart" />
+          </EntityType>
         <EntityType Name="PartsToRepair">
           <Key>
             <PropertyRef Name="ID_partsToRepair" />
@@ -419,6 +490,7 @@
           <NavigationProperty Name="Cars" Relationship="Self.FK_Cars_Users" FromRole="Users" ToRole="Cars" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Users" FromRole="Users" ToRole="Orders" />
           <NavigationProperty Name="Roles" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
+          <NavigationProperty Name="Cart" Relationship="WarsztatModel.FK_Cart_Users" FromRole="Users" ToRole="Cart" />
         </EntityType>
         <Association Name="FK_Addresses_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
@@ -592,8 +664,78 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-        </EntityContainer>
-      </Schema>
+          <EntitySet Name="OrderStatus" EntityType="WarsztatModel.OrderStatus" />
+          <AssociationSet Name="FK_Orders_OrderStatus" Association="WarsztatModel.FK_Orders_OrderStatus">
+            <End Role="OrderStatus" EntitySet="OrderStatus" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <EntitySet Name="Cart" EntityType="WarsztatModel.Cart" />
+          <AssociationSet Name="FK_Cart_Parts" Association="WarsztatModel.FK_Cart_Parts">
+            <End Role="Parts" EntitySet="Parts" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cart_Users" Association="WarsztatModel.FK_Cart_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="OrderStatus">
+          <Key>
+            <PropertyRef Name="ID_status" />
+          </Key>
+          <Property Name="ID_status" Type="Int32" Nullable="false" />
+          <Property Name="StatusName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Orders" Relationship="WarsztatModel.FK_Orders_OrderStatus" FromRole="OrderStatus" ToRole="Orders" />
+        </EntityType>
+        <Association Name="FK_Orders_OrderStatus">
+          <End Type="WarsztatModel.OrderStatus" Role="OrderStatus" Multiplicity="0..1" />
+          <End Type="WarsztatModel.Orders" Role="Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OrderStatus">
+              <PropertyRef Name="ID_status" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ID_status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="ID_cart" />
+          </Key>
+          <Property Name="ID_cart" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_user" Type="Int64" />
+          <Property Name="ID_part" Type="Int64" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Parts" Relationship="WarsztatModel.FK_Cart_Parts" FromRole="Cart" ToRole="Parts" />
+          <NavigationProperty Name="Users" Relationship="WarsztatModel.FK_Cart_Users" FromRole="Cart" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_Cart_Parts">
+          <End Type="WarsztatModel.Parts" Role="Parts" Multiplicity="0..1" />
+          <End Type="WarsztatModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parts">
+              <PropertyRef Name="ID_part" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="ID_part" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cart_Users">
+          <End Type="WarsztatModel.Users" Role="Users" Multiplicity="0..1" />
+          <End Type="WarsztatModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="ID_user" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="ID_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -639,6 +781,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="WarsztatModel.Orders">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="ID_status" ColumnName="ID_status" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ID_order" ColumnName="ID_order" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
@@ -716,6 +859,25 @@
                 <ScalarProperty Name="Surname" ColumnName="Surname" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderStatus">
+            <EntityTypeMapping TypeName="WarsztatModel.OrderStatus">
+              <MappingFragment StoreEntitySet="OrderStatus">
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="ID_status" ColumnName="ID_status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cart">
+            <EntityTypeMapping TypeName="WarsztatModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ID_part" ColumnName="ID_part" />
+                <ScalarProperty Name="ID_user" ColumnName="ID_user" />
+                <ScalarProperty Name="ID_cart" ColumnName="ID_cart" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

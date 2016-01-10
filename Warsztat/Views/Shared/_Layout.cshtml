@@ -10,6 +10,7 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
+
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -19,6 +20,12 @@
                 @Html.ActionLink("Warsztat", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
+                
+
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Car Parts", "Index", "Parts")</li>
+                </ul>
+
                 @if (Session["User"] == null)
                 {
                     <ul class="nav navbar-nav" style="float: right;">
@@ -29,11 +36,22 @@
                 {
                     var aaa = (Warsztat.Models.Users)Session["User"];
 
-                        <ul class="nav navbar-nav" style="float: right;">
-                            <li>@Html.Label("Hello " + aaa.Name)</li>
+                    <div class="dropdown" style="float: right;">
+                        <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
+                            @aaa.Name
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                            <li>@Html.ActionLink("Cars", "Index", "Cars")</li>
+                            <li>@Html.ActionLink("Orders", "Index", "Orders")</li>
+                            <li class="divider"></li>
                             <li>@Html.ActionLink("Sign out", "Logout", "Users")</li>
-                            <li>@Html.ActionLink("Cart", "Index", "Home")</li>
                         </ul>
+                        <ul class="nav navbar-nav" style="float: right;">
+                            <li>@Html.ActionLink("Sign out", "Logout", "Users")</li>
+                            <li>@Html.ActionLink("Cart", "Index", "Cart")</li>
+                        </ul>
+                    </div>                  
                 }
             </div>
         </div>

@@ -19,6 +19,7 @@ namespace Warsztat.Models
         {
             this.OrderDetails = new HashSet<OrderDetails>();
             this.PartsToRepair = new HashSet<PartsToRepair>();
+            this.Cart = new HashSet<Cart>();
         }
     
         public long ID_part { get; set; }
@@ -30,5 +31,7 @@ namespace Warsztat.Models
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PartsToRepair> PartsToRepair { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Cart> Cart { get; set; }
     }
 }
