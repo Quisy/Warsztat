@@ -56,6 +56,7 @@
           <Property Name="ID_order" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderNumber" Type="bigint" />
           <Property Name="ID_user" Type="bigint" />
+          <Property Name="ID_address" Type="bigint" />
           <Property Name="OrderDate" Type="datetime" />
           <Property Name="CompleteDate" Type="datetime" />
           <Property Name="Price" Type="money" />
@@ -204,6 +205,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Addresses">
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Addresses">
+              <PropertyRef Name="ID_address" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ID_address" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Orders_OrderStatus">
           <End Role="OrderStatus" Type="Self.OrderStatus" Multiplicity="0..1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
@@ -326,6 +339,10 @@
             <End Role="Parts" EntitySet="Parts" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Addresses" Association="Self.FK_Orders_Addresses">
+            <End Role="Addresses" EntitySet="Addresses" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
           <AssociationSet Name="FK_Orders_OrderStatus" Association="Self.FK_Orders_OrderStatus">
             <End Role="OrderStatus" EntitySet="OrderStatus" />
             <End Role="Orders" EntitySet="Orders" />
@@ -370,6 +387,7 @@
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PostCode" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Addresses_Users" FromRole="Addresses" ToRole="Users" />
+          <NavigationProperty Name="Orders" Relationship="WarsztatModel.FK_Orders_Addresses" FromRole="Addresses" ToRole="Orders" />
         </EntityType>
         <EntityType Name="Cars">
           <Key>
@@ -412,6 +430,8 @@
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="ID_status" Type="Int32" />
           <NavigationProperty Name="OrderStatus" Relationship="WarsztatModel.FK_Orders_OrderStatus" FromRole="Orders" ToRole="OrderStatus" />
+          <Property Name="ID_address" Type="Int64" />
+          <NavigationProperty Name="Addresses" Relationship="WarsztatModel.FK_Orders_Addresses" FromRole="Orders" ToRole="Addresses" />
         </EntityType>
         <EntityType Name="Parts">
           <Key>
@@ -678,6 +698,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
+          <AssociationSet Name="FK_Orders_Addresses" Association="WarsztatModel.FK_Orders_Addresses">
+            <End Role="Addresses" EntitySet="Addresses" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="OrderStatus">
           <Key>
@@ -735,6 +759,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Orders_Addresses">
+          <End Type="WarsztatModel.Addresses" Role="Addresses" Multiplicity="0..1" />
+          <End Type="WarsztatModel.Orders" Role="Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Addresses">
+              <PropertyRef Name="ID_address" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="ID_address" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -781,6 +817,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="WarsztatModel.Orders">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="ID_address" ColumnName="ID_address" />
                 <ScalarProperty Name="ID_status" ColumnName="ID_status" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ID_order" ColumnName="ID_order" />

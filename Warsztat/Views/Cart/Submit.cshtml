@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Warsztat.Models.Cart>
+
+@section Scripts
+{
+    <script>
+        $("#MyDropDown").change(function (e) {
+            return GetAddress();
+        });
+
+        function GetAddress() {
+            var id = window.event.srcElement.id;
+            var value = document.getElementById(id).value;
+
+            window.location = "/Cart/GetAddress/" + value;
+
+            return this;
+        };
+    </script>
+}
+
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+
+<h2>Sumbit</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="containter">
+
+        <table class="table" style="border:solid 3px">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Parts.PartName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Parts.PartName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => item.Price)
+                    </td>
+                </tr>
+            }
+        </table>
+        <div style="text-align:right;">
+            @Html.Raw("Total Price: " + ViewBag.TotalPrice)
+            <br />
+            <div class="form-actions no-color">
+                <input type="submit" value="Confirm" class="btn btn-default" /> |
+            </div>
+        </div>
+        <div style="text-align:left;">
+
+            @{
+                var address = (Warsztat.ViewModels.AddressViewModel)ViewBag.address;
+            }
+
+            @Html.Raw("Address")
+            <br />
+            @*@Html.DropDownList("ID_address", null, htmlAttributes: new {@class = "form -control", @onchange = "GetAddress();" })*@
+
+            @Html.DropDownList("ID_address", address.Addresses, htmlAttributes: new { @class = "form -control" })
+
+            @*<table class="table-bordered" style="border:solid 1px">
+                    <tr>
+                        <td>
+                            @Html.Raw("Street:" )
+                        </td>
+                        <td>
+                            @Html.Raw("Street:")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Raw("Number:")
+                        </td>
+                        <td>
+                            @Html.Raw("Number:")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Raw("City:")
+                        </td>
+                        <td>
+                            @Html.Raw("City:")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Raw("Post code:")
+                        </td>
+                        <td>
+                            @Html.Raw("Post code:")
+                        </td>
+                    </tr>
+                </table>*@
+        </div>
+
+    </div>
+}

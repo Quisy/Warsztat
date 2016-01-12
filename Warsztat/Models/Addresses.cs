@@ -14,6 +14,12 @@ namespace Warsztat.Models
     
     public partial class Addresses
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Addresses()
+        {
+            this.Orders = new HashSet<Orders>();
+        }
+    
         public long ID_address { get; set; }
         public long ID_user { get; set; }
         public string Street { get; set; }
@@ -22,5 +28,7 @@ namespace Warsztat.Models
         public string PostCode { get; set; }
     
         public virtual Users Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Orders> Orders { get; set; }
     }
 }

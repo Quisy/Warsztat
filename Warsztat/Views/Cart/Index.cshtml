@@ -56,10 +56,16 @@
         function changeQuantity() {
             var id = window.event.srcElement.id;
             var value = document.getElementById(id).value;
+            if (value < 0) value = 1;
+            
             //alert('Działa');
             window.location = "/Cart/ChangeQuantity/" + id + "/" + value;
 
             return this;
+        };
+
+        function ConfirmOrder() {
+            window.location.href = "/Cart/Submit";
         };
     </script>
 }
@@ -108,6 +114,8 @@
     </table>
     <div style="text-align:right;">
         @Html.Raw("Total Price: " + ViewBag.TotalPrice)
+        <br/>
+        <input type="button" value="Confirm order" onclick="ConfirmOrder();" />
     </div>
 
 </div>

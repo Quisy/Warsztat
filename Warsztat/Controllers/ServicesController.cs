@@ -10,127 +10,107 @@ using Warsztat.Models;
 
 namespace Warsztat.Controllers
 {
-    public class CarsController : Controller
+    public class ServicesController : Controller
     {
         private WarsztatDataEntities db = new WarsztatDataEntities();
 
-        // GET: Cars
+        // GET: Services
         public ActionResult Index()
         {
-            if (Session["User"] == null)
-            {
-                //return View("~/Views/Users/Login.cshtml");
-                return RedirectToAction("Login", "Users");
-            }
-            var user = (Users)Session["User"];
-
-            var cars = db.Cars.Include(c => c.Users).Where(c => c.ID_user == user.ID_user);
-            return View(cars.ToList());
+            return View(db.Services.ToList());
         }
 
-        // GET: Cars/Details/5
+        // GET: Services/Details/5
         public ActionResult Details(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CarModel car = new CarModel()
-            {
-                Car = db.Cars.Find(id),
-                Repairs = db.Repairs.Where(r => r.ID_car == id).ToList()
-            };
-            //Cars cars = db.Cars.Find(id);
-            if (car == null)
+            Services services = db.Services.Find(id);
+            if (services == null)
             {
                 return HttpNotFound();
             }
-            return View(car);
+            return View(services);
         }
 
-        // GET: Cars/Create
+        // GET: Services/Create
         public ActionResult Create()
         {
-            ViewBag.ID_user = new SelectList(db.Users, "ID_user", "Name");
             return View();
         }
 
-        // POST: Cars/Create
+        // POST: Services/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID_car,ID_user,Brand,Model,RegistrationNo,ProductionDate,Mileage,Visits,InService")] Cars cars)
+        public ActionResult Create([Bind(Include = "ID_service,ServiceName,Price")] Services services)
         {
             if (ModelState.IsValid)
             {
-                var user = (Users)Session["User"];
-                cars.ID_user = user.ID_user;
-                cars.InService = false;
-                db.Cars.Add(cars);
+                db.Services.Add(services);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ID_user = new SelectList(db.Users, "ID_user", "Name", cars.ID_user);
-            return View(cars);
+            return View(services);
         }
 
-        // GET: Cars/Edit/5
+        // GET: Services/Edit/5
         public ActionResult Edit(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cars cars = db.Cars.Find(id);
-            if (cars == null)
+            Services services = db.Services.Find(id);
+            if (services == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ID_user = new SelectList(db.Users, "ID_user", "Name", cars.ID_user);
-            return View(cars);
+            return View(services);
         }
 
-        // POST: Cars/Edit/5
+        // POST: Services/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID_car,ID_user,Brand,Model,RegistrationNo,ProductionDate,Mileage,InService")] Cars cars)
+        public ActionResult Edit([Bind(Include = "ID_service,ServiceName,Price")] Services services)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cars).State = EntityState.Modified;
+                db.Entry(services).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ID_user = new SelectList(db.Users, "ID_user", "Name", cars.ID_user);
-            return View(cars);
+            return View(services);
         }
 
-        // GET: Cars/Delete/5
+        // GET: Services/Delete/5
         public ActionResult Delete(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cars cars = db.Cars.Find(id);
-            if (cars == null)
+            Services services = db.Services.Find(id);
+            if (services == null)
             {
                 return HttpNotFound();
             }
-            return View(cars);
+            return View(services);
         }
 
-        // POST: Cars/Delete/5
+        // POST: Services/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Cars cars = db.Cars.Find(id);
-            db.Cars.Remove(cars);
+            Services services = db.Services.Find(id);
+            db.Services.Remove(services);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

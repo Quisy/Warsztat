@@ -10,127 +10,117 @@ using Warsztat.Models;
 
 namespace Warsztat.Controllers
 {
-    public class CarsController : Controller
+    public class RepairsController : Controller
     {
         private WarsztatDataEntities db = new WarsztatDataEntities();
 
-        // GET: Cars
+        // GET: Repairs
         public ActionResult Index()
         {
-            if (Session["User"] == null)
-            {
-                //return View("~/Views/Users/Login.cshtml");
-                return RedirectToAction("Login", "Users");
-            }
-            var user = (Users)Session["User"];
-
-            var cars = db.Cars.Include(c => c.Users).Where(c => c.ID_user == user.ID_user);
-            return View(cars.ToList());
+            var repairs = db.Repairs.Include(r => r.Cars).Include(r => r.Services);
+            return View(repairs.ToList());
         }
 
-        // GET: Cars/Details/5
+        // GET: Repairs/Details/5
         public ActionResult Details(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CarModel car = new CarModel()
-            {
-                Car = db.Cars.Find(id),
-                Repairs = db.Repairs.Where(r => r.ID_car == id).ToList()
-            };
-            //Cars cars = db.Cars.Find(id);
-            if (car == null)
+            Repairs repairs = db.Repairs.Find(id);
+            if (repairs == null)
             {
                 return HttpNotFound();
             }
-            return View(car);
+            return View(repairs);
         }
 
-        // GET: Cars/Create
-        public ActionResult Create()
+        // GET: Repairs/Create
+        public ActionResult Create(int carID)
         {
-            ViewBag.ID_user = new SelectList(db.Users, "ID_user", "Name");
+            ViewBag.ID_car = carID;
+            ViewBag.ID_service = new SelectList(db.Services, "ID_service", "ServiceName");
             return View();
         }
 
-        // POST: Cars/Create
+        // POST: Repairs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID_car,ID_user,Brand,Model,RegistrationNo,ProductionDate,Mileage,Visits,InService")] Cars cars)
+        public ActionResult Create([Bind(Include = "ID_repair,ID_car,ID_service,StartDate,FinishDate")] Repairs repairs)
         {
             if (ModelState.IsValid)
             {
-                var user = (Users)Session["User"];
-                cars.ID_user = user.ID_user;
-                cars.InService = false;
-                db.Cars.Add(cars);
+                repairs.ID_car = Convert.ToInt64(Request.QueryString["carID"]);
+                db.Repairs.Add(repairs);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Cars", new { id = repairs.ID_car });
             }
 
-            ViewBag.ID_user = new SelectList(db.Users, "ID_user", "Name", cars.ID_user);
-            return View(cars);
+            ViewBag.ID_car = new SelectList(db.Cars, "ID_car", "Brand", repairs.ID_car);
+            ViewBag.ID_service = new SelectList(db.Services, "ID_service", "ServiceName", repairs.ID_service);
+            return View(repairs);
         }
 
-        // GET: Cars/Edit/5
+        // GET: Repairs/Edit/5
         public ActionResult Edit(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cars cars = db.Cars.Find(id);
-            if (cars == null)
+            Repairs repairs = db.Repairs.Find(id);
+            if (repairs == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ID_user = new SelectList(db.Users, "ID_user", "Name", cars.ID_user);
-            return View(cars);
+            ViewBag.ID_car = new SelectList(db.Cars, "ID_car", "Brand", repairs.ID_car);
+            ViewBag.ID_service = new SelectList(db.Services, "ID_service", "ServiceName", repairs.ID_service);
+            return View(repairs);
         }
 
-        // POST: Cars/Edit/5
+        // POST: Repairs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID_car,ID_user,Brand,Model,RegistrationNo,ProductionDate,Mileage,InService")] Cars cars)
+        public ActionResult Edit([Bind(Include = "ID_repair,ID_car,ID_service,StartDate,FinishDate")] Repairs repairs)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cars).State = EntityState.Modified;
+                db.Entry(repairs).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ID_user = new SelectList(db.Users, "ID_user", "Name", cars.ID_user);
-            return View(cars);
+            ViewBag.ID_car = new SelectList(db.Cars, "ID_car", "Brand", repairs.ID_car);
+            ViewBag.ID_service = new SelectList(db.Services, "ID_service", "ServiceName", repairs.ID_service);
+            return View(repairs);
         }
 
-        // GET: Cars/Delete/5
+        // GET: Repairs/Delete/5
         public ActionResult Delete(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Cars cars = db.Cars.Find(id);
-            if (cars == null)
+            Repairs repairs = db.Repairs.Find(id);
+            if (repairs == null)
             {
                 return HttpNotFound();
             }
-            return View(cars);
+            return View(repairs);
         }
 
-        // POST: Cars/Delete/5
+        // POST: Repairs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Cars cars = db.Cars.Find(id);
-            db.Cars.Remove(cars);
+            Repairs repairs = db.Repairs.Find(id);
+            db.Repairs.Remove(repairs);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

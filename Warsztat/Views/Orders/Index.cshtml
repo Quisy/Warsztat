@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Warsztat.Models.Orders>
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@{
+    var user = (Warsztat.Models.Users)Session["User"];
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ID_order)
+        </th>
+        @if (user.ID_role == 2)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.Users.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users.Surname)
+            </th>
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderStatus.StatusName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID_order)
+            </td>
+            @if (user.ID_role == 2)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Users.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Users.Surname)
+                </td>
+            }
+
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderStatus.StatusName)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.ID_order }) |
+                @{
+
+                    if (user.ID_role == 2)
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID_order })
+                    }
+                }
+            </td>
+        </tr>
+    }
+
+</table>

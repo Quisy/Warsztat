@@ -27,10 +27,12 @@ namespace Warsztat.Models
         public Nullable<System.DateTime> CompleteDate { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<int> ID_status { get; set; }
+        public Nullable<long> ID_address { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
         public virtual Users Users { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }
+        public virtual Addresses Addresses { get; set; }
     }
 }

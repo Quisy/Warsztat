@@ -17,6 +17,17 @@ namespace Warsztat.Controllers
         // GET: Users
         public ActionResult Index()
         {
+            if (Session["User"] == null)
+            {
+                //return View("~/Views/Users/Login.cshtml");
+                return RedirectToAction("Login", "Users");
+            }
+            var user = (Users)Session["User"];
+
+            if (user.ID_role == 1)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var users = db.Users.Include(u => u.Roles);
             return View(users.ToList());
         }
@@ -28,12 +39,20 @@ namespace Warsztat.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Users users = db.Users.Find(id);
-            if (users == null)
+            var tempuser = db.Users.Find(id);
+            UserModel user = new UserModel
+            {
+                Users = db.Users.Find(id),
+                Addresses = db.Addresses.FirstOrDefault(a => a.ID_user == tempuser.ID_user),
+                Cars = db.Cars.Where(c => c.ID_user == tempuser.ID_user).ToList(),
+                Orders = db.Orders.Where(o => o.ID_user == tempuser.ID_user).ToList()
+            };
+            //Users users = db.Users.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(users);
+            return View(user);
         }
 
         // GET: Users/Create
@@ -156,6 +175,32 @@ namespace Warsztat.Controllers
             //Session["UserID"] = null;
             //Session["UserRole"] = null;
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Register()
+        {
+            var users = new UserModel();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Register([Bind(Include = "ID_user,ID_role,Name,Surname,Login,Password")] Users users, [Bind(Include = "ID_address,ID_user,Street,Number,City,PostCode")] Addresses addresses)
+        {
+            if (ModelState.IsValid)
+            {
+                users.ID_role = 1;
+                db.Users.Add(users);
+                db.SaveChanges();
+
+                var user =  db.Users.Find(db.Users.Max(p => p.ID_user));
+                addresses.ID_user = user.ID_user;
+
+                db.Addresses.Add(addresses);
+                db.SaveChanges();
+
+                return RedirectToAction("Login");
+            }
+            return View();
         }
 
 

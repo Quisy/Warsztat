@@ -1,0 +1,50 @@
+﻿@model Warsztat.Models.Repairs
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Repairs</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FinishDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FinishDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cars.Brand)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cars.Brand)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Services.ServiceName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Services.ServiceName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID_repair }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

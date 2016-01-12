@@ -142,7 +142,7 @@ namespace Warsztat.Controllers
 
             db.Cart.Add(cart);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Cart");
         }
     }
 }

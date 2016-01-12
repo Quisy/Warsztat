@@ -31,6 +31,7 @@
         <EntityTypeShape EntityType="WarsztatModel.Cart" Width="1.5" PointX="9.75" PointY="1.125" />
         <AssociationConnector Association="WarsztatModel.FK_Cart_Parts" />
         <AssociationConnector Association="WarsztatModel.FK_Cart_Users" />
+        <AssociationConnector Association="WarsztatModel.FK_Orders_Addresses" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

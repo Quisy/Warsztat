@@ -1,4 +1,4 @@
-﻿@model Warsztat.Models.Users
+﻿@model Warsztat.Models.UserModel
 
 @{
     ViewBag.Title = "Details";
@@ -6,53 +6,185 @@
 
 <h2>Details</h2>
 
+@{
+    var user = (Warsztat.Models.Users)Session["User"];
+}
+
 <div>
     <h4>Users</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Users.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Users.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Surname)
+            @Html.DisplayNameFor(model => model.Users.Surname)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Surname)
+            @Html.DisplayFor(model => model.Users.Surname)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Login)
+            @Html.DisplayNameFor(model => model.Users.Roles.RoleName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Login)
+            @Html.DisplayFor(model => model.Users.Roles.RoleName)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Roles.RoleName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Roles.RoleName)
-        </dd>
-
     </dl>
+
+    <hr />
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresses.Street)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresses.Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresses.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresses.PostCode)
+            </th>
+        </tr>
+
+
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.Addresses.Street)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Addresses.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Addresses.City)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Addresses.PostCode)
+            </td>
+        </tr>
+
+    </table>
+
+    <hr />
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.Raw("Brand")
+            </th>
+            <th>
+                @Html.Raw("Model")
+            </th>
+            <th>
+                @Html.Raw("RegistrationNo")
+            </th>
+            <th>
+                @Html.Raw("ProductionDate")
+            </th>
+            <th>
+                @Html.Raw("Mileage")
+            </th>
+            <th>
+                @Html.Raw("InService")
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Cars)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegistrationNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductionDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mileage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InService)
+                </td>
+                <td>
+                    @if (user.ID_role == 2)
+                    {
+                        @Html.ActionLink("Edit", "Edit", "Cars", new { id = item.ID_car }, new { })
+                    }|
+                    @Html.ActionLink("Details", "Details", "Cars", new { id = item.ID_car }, new { }) |
+                    @Html.ActionLink("Delete", "Delete", "Cars", new { id = item.ID_car }, new { }) |
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <hr />
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.Raw("Order number")
+            </th>
+            <th>
+               @Html.Raw("Order Date")
+            </th>
+            <th>
+                @Html.Raw("Price")
+            </th>
+            <th>
+                @Html.Raw("Status")
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Orders)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID_order)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderStatus.StatusName)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "Details", "Orders", new { id = item.ID_order }, new { }) |
+                    @{
+
+                        if (user.ID_role == 2)
+                        {
+                            @Html.ActionLink("Edit", "Edit", "Orders", new { id = item.ID_order }, new { })
+                        }
+                    }
+                </td>
+            </tr>
+                        }
+
+    </table>
+
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID_user }) |
-    @Html.ActionLink("Back to List", "Index")
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Users.ID_user }) |
+    @Html.ActionLink("Back to List", "Index")*@
 </p>

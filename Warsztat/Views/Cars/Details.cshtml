@@ -1,4 +1,4 @@
-﻿@model Warsztat.Models.Cars
+﻿@model Warsztat.Models.CarModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,64 +11,108 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Brand)
+            @Html.DisplayNameFor(model => model.Car.Brand)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Brand)
+            @Html.DisplayFor(model => model.Car.Brand)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Model)
+            @Html.DisplayNameFor(model => model.Car.Model)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Model)
+            @Html.DisplayFor(model => model.Car.Model)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.RegistrationNo)
+            @Html.DisplayNameFor(model => model.Car.RegistrationNo)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.RegistrationNo)
+            @Html.DisplayFor(model => model.Car.RegistrationNo)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ProductionDate)
+            @Html.DisplayNameFor(model => model.Car.ProductionDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ProductionDate)
+            @Html.DisplayFor(model => model.Car.ProductionDate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Mileage)
+            @Html.DisplayNameFor(model => model.Car.Mileage)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Mileage)
+            @Html.DisplayFor(model => model.Car.Mileage)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.InService)
+            @Html.DisplayNameFor(model => model.Car.InService)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.InService)
+            @Html.DisplayFor(model => model.Car.InService)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Users.Name)
+            @Html.DisplayNameFor(model => model.Car.Users.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Users.Name)
+            @Html.DisplayFor(model => model.Car.Users.Name)
         </dd>
 
     </dl>
+
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Car.ID_car }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+
+    <hr/>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Service name")
+            </th>
+            <th>
+                @Html.DisplayName("Start Date")
+            </th>
+            <th>
+                @Html.DisplayName("Finish Date")
+            </th>
+            <th>
+                @Html.DisplayName("Price")
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Repairs)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Services.ServiceName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinishDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Services.Price)
+                </td>
+            </tr>
+        }      
+    </table>
+
+    <p>
+        @Html.ActionLink("Add repair", "Create", "Repairs", new { carID = Model.Car.ID_car }, new { })
+    </p>
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID_car }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

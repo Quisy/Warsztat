@@ -24,6 +24,7 @@
 
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Car Parts", "Index", "Parts")</li>
+                    <li>@Html.ActionLink("Services", "Index", "Services")</li>
                 </ul>
 
                 @if (Session["User"] == null)
@@ -34,17 +35,24 @@
                 }
                 else
                 {
-                    var aaa = (Warsztat.Models.Users)Session["User"];
+                    var user = (Warsztat.Models.Users)Session["User"];
 
                     <div class="dropdown" style="float: right;">
                         <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
-                            @aaa.Name
+                            @user.Name
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                             <li>@Html.ActionLink("Cars", "Index", "Cars")</li>
                             <li>@Html.ActionLink("Orders", "Index", "Orders")</li>
                             <li class="divider"></li>
+                            @if (user.ID_role == 2)
+                            {
+                                <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                                <li>@Html.ActionLink("Orders", "Index", "Orders")</li>
+                            }
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("My account", "Details", "Users", new { id = user.ID_user}, new { })</li>
                             <li>@Html.ActionLink("Sign out", "Logout", "Users")</li>
                         </ul>
                         <ul class="nav navbar-nav" style="float: right;">
