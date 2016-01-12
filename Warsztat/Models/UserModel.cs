@@ -8,7 +8,8 @@ namespace Warsztat.Models
     public class UserModel
     {
         public Users Users { get; set; }
-        public Addresses Addresses { get; set; }
+        public Addresses Address { get; set; }
+        public List<Addresses> Addresses { get; set; }
         public List<Cars> Cars { get; set; }
         public List<Orders> Orders { get; set; }
     }

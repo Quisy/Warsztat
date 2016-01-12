@@ -44,36 +44,41 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Addresses.Street)
+                @Html.Raw("Street")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Addresses.Number)
+                @Html.Raw("Number")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Addresses.City)
+                @Html.Raw("City")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Addresses.PostCode)
+                @Html.Raw("Post Code")
             </th>
         </tr>
 
-
-        <tr>
-            <td>
-                @Html.DisplayFor(model => model.Addresses.Street)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Addresses.Number)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Addresses.City)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Addresses.PostCode)
-            </td>
-        </tr>
-
+        @foreach (var item in Model.Addresses)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostCode)
+                </td>
+            </tr>
+        }
     </table>
+
+    <p>
+        @Html.ActionLink("Add address", "Create", "Addresses")
+    </p>
 
     <hr />
 
@@ -134,6 +139,10 @@
 
     </table>
 
+    <p>
+        @Html.ActionLink("Add car", "Create", "Cars")
+    </p>
+
     <hr />
 
     <table class="table">
@@ -142,7 +151,7 @@
                 @Html.Raw("Order number")
             </th>
             <th>
-               @Html.Raw("Order Date")
+                @Html.Raw("Order Date")
             </th>
             <th>
                 @Html.Raw("Price")
@@ -154,7 +163,7 @@
         </tr>
 
         @foreach (var item in Model.Orders)
-        {
+            {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.ID_order)
@@ -186,5 +195,5 @@
 </div>
 <p>
     @*@Html.ActionLink("Edit", "Edit", new { id = Model.Users.ID_user }) |
-    @Html.ActionLink("Back to List", "Index")*@
+        @Html.ActionLink("Back to List", "Index")*@
 </p>

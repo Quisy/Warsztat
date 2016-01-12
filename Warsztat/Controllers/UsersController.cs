@@ -43,7 +43,7 @@ namespace Warsztat.Controllers
             UserModel user = new UserModel
             {
                 Users = db.Users.Find(id),
-                Addresses = db.Addresses.FirstOrDefault(a => a.ID_user == tempuser.ID_user),
+                Addresses = db.Addresses.Where(a => a.ID_user == tempuser.ID_user).ToList(),
                 Cars = db.Cars.Where(c => c.ID_user == tempuser.ID_user).ToList(),
                 Orders = db.Orders.Where(o => o.ID_user == tempuser.ID_user).ToList()
             };
@@ -184,7 +184,7 @@ namespace Warsztat.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register([Bind(Include = "ID_user,ID_role,Name,Surname,Login,Password")] Users users, [Bind(Include = "ID_address,ID_user,Street,Number,City,PostCode")] Addresses addresses)
+        public ActionResult Register([Bind(Include = "ID_user,ID_role,Name,Surname,Login,Password")] Users users)//, [Bind(Include = "ID_address,ID_user,Street,Number,City,PostCode")] Addresses addresses, string Street, int Number, string City, string PostCode)
         {
             if (ModelState.IsValid)
             {
@@ -192,11 +192,11 @@ namespace Warsztat.Controllers
                 db.Users.Add(users);
                 db.SaveChanges();
 
-                var user =  db.Users.Find(db.Users.Max(p => p.ID_user));
-                addresses.ID_user = user.ID_user;
+                //var user =  db.Users.Find(db.Users.Max(p => p.ID_user));
+                //addresses.ID_user = user.ID_user;
 
-                db.Addresses.Add(addresses);
-                db.SaveChanges();
+                //db.Addresses.Add(addresses);
+                //db.SaveChanges();
 
                 return RedirectToAction("Login");
             }

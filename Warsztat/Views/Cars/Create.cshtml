@@ -1,5 +1,6 @@
 ﻿@model Warsztat.Models.Cars
 
+
 @{
     ViewBag.Title = "Create";
 }
@@ -7,10 +8,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Cars</h4>
         <hr />
@@ -43,7 +44,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ProductionDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductionDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.ProductionDate, new { htmlAttributes = new { @class = "form-control datepicker", placeholder = "Enter Drop-off date here..." } })
                 @Html.ValidationMessageFor(model => model.ProductionDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -55,7 +56,7 @@
                 @Html.ValidationMessageFor(model => model.Mileage, "", new { @class = "text-danger" })
             </div>
         </div>
-     
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -70,4 +71,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+        $(function () { // will trigger when the document is ready
+            $('.datepicker').datepicker(); //Initialise any date pickers
+        });
+</script>
 }

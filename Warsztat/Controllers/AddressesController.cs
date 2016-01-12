@@ -39,6 +39,11 @@ namespace Warsztat.Controllers
         // GET: Addresses/Create
         public ActionResult Create()
         {
+            if (Session["User"] == null)
+            {
+                //return View("~/Views/Users/Login.cshtml");
+                return RedirectToAction("Login", "Users");
+            }
             ViewBag.ID_user = new SelectList(db.Users, "ID_user", "Name");
             return View();
         }
@@ -50,15 +55,23 @@ namespace Warsztat.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID_address,ID_user,Street,Number,City,PostCode")] Addresses addresses)
         {
+            if (Session["User"] == null)
+            {
+                //return View("~/Views/Users/Login.cshtml");
+                return RedirectToAction("Login", "Users");
+            }
+            var user = (Users)Session["User"];
             if (ModelState.IsValid)
             {
+                addresses.ID_user = user.ID_user;
                 db.Addresses.Add(addresses);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                
+                return RedirectToAction("Details", "Users", new { id = user.ID_user });
             }
 
             ViewBag.ID_user = new SelectList(db.Users, "ID_user", "Name", addresses.ID_user);
-            return View(addresses);
+            return RedirectToAction("Index");
         }
 
         // GET: Addresses/Edit/5
